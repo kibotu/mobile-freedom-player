@@ -4,13 +4,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.exozet.sequentialimage.player.SequentialImagePlayer
 import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayer
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.freedom_player_main_activity.*
 
-class MainActivity : AppCompatActivity() {
+class FreedomPlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.freedom_player_main_activity)
 
         startInteriorPlayer.setOnClickListener {
             startThreeHundredSixtyPlayer("equirectangular.jpg")

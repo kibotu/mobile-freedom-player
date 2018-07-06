@@ -1,2 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.exozet.freedomplayer" />
+    package="com.exozet.freedomplayer">
+
+    <application>
+        <activity
+            android:name="com.exozet.freedomplayer.FreedomPlayerActivity"
+            android:configChanges="screenSize|orientation"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+    </application>
+
+</manifest>
