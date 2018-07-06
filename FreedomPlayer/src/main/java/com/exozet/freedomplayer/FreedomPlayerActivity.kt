@@ -43,6 +43,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
         ThreeHundredSixtyPlayer
                 .with(this)
                 .assetFile(filename)
+                .motion()
                 .startActivity()
     }
 
