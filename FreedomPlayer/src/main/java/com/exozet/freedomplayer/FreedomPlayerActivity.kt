@@ -23,6 +23,8 @@ class FreedomPlayerActivity : AppCompatActivity() {
         exit.setOnClickListener {
             finish()
         }
+
+        switchToInterior()
     }
 
     fun switchToExterior() {
