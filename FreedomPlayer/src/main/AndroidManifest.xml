@@ -5,6 +5,7 @@
     <application>
         <activity
             android:name="com.exozet.freedomplayer.FreedomPlayerActivity"
+            android:configChanges="screenSize|orientation"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
     </application>
 
