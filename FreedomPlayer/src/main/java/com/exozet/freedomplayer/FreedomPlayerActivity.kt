@@ -30,13 +30,13 @@ class FreedomPlayerActivity : AppCompatActivity() {
     fun switchToExterior() {
         startInteriorPlayer.isSelected = false
         startExteriorPlayer.isSelected = true
-        // startSequentialPlayer((1 until 192).map { String.format("stabilized/out%03d.png", it) }.toList())
+        startSequentialPlayer((1 until 192).map { String.format("stabilized/out%03d.png", it) }.toList())
     }
 
     fun switchToInterior() {
         startInteriorPlayer.isSelected = true
         startExteriorPlayer.isSelected = false
-        //startThreeHundredSixtyPlayer("equirectangular.jpg")
+        startThreeHundredSixtyPlayer("equirectangular.jpg")
     }
 
     private fun startThreeHundredSixtyPlayer(filename: String) {
