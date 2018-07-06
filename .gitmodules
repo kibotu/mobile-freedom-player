@@ -1,0 +1,3 @@
+[submodule "android-360-player"]
+	path = android-360-player
+	url = git@git.exozet.com:mobile-de/POC/android-360-player.git
