@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="freedom_inactive_gray">#808080</color>
+    <color name="freedom_active_orange">#FF6600</color>
+</resources>

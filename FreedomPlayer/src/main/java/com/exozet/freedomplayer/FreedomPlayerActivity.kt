@@ -19,6 +19,10 @@ class FreedomPlayerActivity : AppCompatActivity() {
         startExteriorPlayer.setOnClickListener {
             startSequentialPlayer((1 until 192).map { String.format("stabilized/out%03d.png", it) }.toList())
         }
+
+        exit.setOnClickListener {
+            finish()
+        }
     }
 
     private fun startThreeHundredSixtyPlayer(filename: String) {
