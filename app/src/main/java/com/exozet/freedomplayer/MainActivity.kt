@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         startInteriorPlayer.setOnClickListener {
-            startThreeHundredSixtyPlayer("equirectangular.png")
+            startThreeHundredSixtyPlayer("equirectangular.jpg")
         }
 
         startExteriorPlayer.setOnClickListener {
@@ -35,9 +35,9 @@ class MainActivity : AppCompatActivity() {
                 .assetFiles(list)
                 // .externalStorageFiles(list)
                 // .files(list)
-                .fps(24) // default: 30
+                .fps(30) // default: 30
                 .playBackwards(false) // default: false
-                .autoPlay(false) // default: true
+                .autoPlay(true) // default: true
                 .zoom(true) // default: true
                 .controls(true) // default: false
                 .swipeSpeed(0.8f) // default: 1
