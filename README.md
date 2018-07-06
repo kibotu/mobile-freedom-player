@@ -18,6 +18,10 @@ Atm only as module
     
 # Changelog
 
+# TODO
+
+* remove stroke between buttons: https://gist.github.com/CiTuX/5031751
+
 # Related Project
 
 * [ThreeHundredSixtyPlayer](https://git.exozet.com/mobile-de/POC/android-360-player)

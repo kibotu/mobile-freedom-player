@@ -12,17 +12,29 @@ class FreedomPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.freedom_player_main_activity)
 
-        startInteriorPlayer.setOnClickListener {
-            startThreeHundredSixtyPlayer("equirectangular.jpg")
+        startExteriorPlayer.setOnClickListener {
+            switchToExterior()
         }
 
-        startExteriorPlayer.setOnClickListener {
-            startSequentialPlayer((1 until 192).map { String.format("stabilized/out%03d.png", it) }.toList())
+        startInteriorPlayer.setOnClickListener {
+            switchToInterior()
         }
 
         exit.setOnClickListener {
             finish()
         }
+    }
+
+    fun switchToExterior() {
+        startInteriorPlayer.isSelected = false
+        startExteriorPlayer.isSelected = true
+        // startSequentialPlayer((1 until 192).map { String.format("stabilized/out%03d.png", it) }.toList())
+    }
+
+    fun switchToInterior() {
+        startInteriorPlayer.isSelected = true
+        startExteriorPlayer.isSelected = false
+        //startThreeHundredSixtyPlayer("equirectangular.jpg")
     }
 
     private fun startThreeHundredSixtyPlayer(filename: String) {
