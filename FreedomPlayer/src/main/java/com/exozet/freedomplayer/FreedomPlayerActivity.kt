@@ -57,7 +57,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
     private fun startSequentialPlayer(list: List<Uri>) = with(sequentialImagePlayer) {
         imageUris = list.toTypedArray()
-        autoPlayEnabled = true
+        autoPlay = true
         fps = 25
         playBackwards = false
         zoomable = true
