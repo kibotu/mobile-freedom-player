@@ -1,9 +1,10 @@
 package com.exozet.freedomplayer
 
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.exozet.parseAssetFile
-import com.exozet.sequentialimage.player.Builder
 import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayer
 import kotlinx.android.synthetic.main.freedom_player_main_activity.*
 
@@ -13,52 +14,48 @@ class FreedomPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.freedom_player_main_activity)
 
+        val imageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }
+        val equirectangular = "equirectangular.jpg"
+
         startExteriorPlayer.setOnClickListener {
-            switchToExterior()
+            switchToExterior(imageUris)
         }
 
         startInteriorPlayer.setOnClickListener {
-            switchToInterior()
+            switchToInterior(equirectangular)
         }
 
         exit.setOnClickListener {
             finish()
         }
 
-        switchToInterior()
+        switchToInterior(equirectangular)
     }
 
-    fun switchToExterior() {
+    fun switchToExterior(list: List<Uri>) {
         startInteriorPlayer.isSelected = false
         startExteriorPlayer.isSelected = true
-        startSequentialPlayer((1 until 192).map { String.format("stabilized/out%03d.png", it) }.toList())
+        threeHundredSixtyView.visibility = View.GONE
+        sequentialImagePlayer.visibility = View.VISIBLE
+        startSequentialPlayer(list)
     }
 
-    fun switchToInterior() {
+    fun switchToInterior(filename: String) {
         startInteriorPlayer.isSelected = true
         startExteriorPlayer.isSelected = false
-        startThreeHundredSixtyPlayer("equirectangular.jpg")
+        threeHundredSixtyView.visibility = View.VISIBLE
+        sequentialImagePlayer.visibility = View.GONE
+        startThreeHundredSixtyPlayer(filename)
     }
 
-    private fun startThreeHundredSixtyPlayer(filename: String) {
-        threeHundredSixtyView.uri = parseAssetFile(filename)
-        threeHundredSixtyView.projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE
-        threeHundredSixtyView.interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_TOUCH
+    private fun startThreeHundredSixtyPlayer(filename: String) = with(threeHundredSixtyView) {
+        uri = parseAssetFile(filename)
+        projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE
+        interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_TOUCH
     }
 
-    fun startSequentialPlayer(list: List<String>) {
-        Builder
-                .with(this)
-                // .internalStorageFiles(list)
-                .assetFiles(list)
-                // .externalStorageFiles(list)
-                // .files(list)
-                .fps(30) // default: 30
-                .playBackwards(false) // default: false
-                .autoPlay(true) // default: true
-                .zoom(true) // default: true
-                .controls(true) // default: false
-                .swipeSpeed(0.8f) // default: 1
-                .startActivity()
+    private fun startSequentialPlayer(list: List<Uri>) {
+        sequentialImagePlayer.imageUris = list.toTypedArray()
+        sequentialImagePlayer.showControls(false)
     }
 }
