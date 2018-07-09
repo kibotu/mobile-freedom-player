@@ -29,7 +29,8 @@ class FreedomPlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        switchToInterior(equirectangular)
+        switchToExterior(imageUris)
+        // switchToInterior(equirectangular)
     }
 
     fun switchToExterior(list: List<Uri>) {
@@ -51,11 +52,17 @@ class FreedomPlayerActivity : AppCompatActivity() {
     private fun startThreeHundredSixtyPlayer(filename: String) = with(threeHundredSixtyView) {
         uri = parseAssetFile(filename)
         projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE
-        interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_TOUCH
+        interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH
     }
 
-    private fun startSequentialPlayer(list: List<Uri>) {
-        sequentialImagePlayer.imageUris = list.toTypedArray()
-        sequentialImagePlayer.showControls(false)
+    private fun startSequentialPlayer(list: List<Uri>) = with(sequentialImagePlayer) {
+        imageUris = list.toTypedArray()
+        autoPlayEnabled = false
+        fps = 30
+        playBackwards = false
+        zoomable = false
+        translatable = false
+        showControls = true
+        swipeSpeed = 1f
     }
 }
