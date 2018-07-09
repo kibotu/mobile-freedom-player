@@ -1,6 +1,6 @@
 [submodule "android-360-player"]
 	path = android-360-player
 	url = git@git.exozet.com:mobile-de/POC/android-360-player.git
-[submodule "android-walkthrough-player"]
-	path = android-walkthrough-player
+[submodule "android-walkthroug-player"]
+	path = android-walkthroug-player
 	url = git@git.exozet.com:mobile-de/POC/android-walkthroug-player.git
