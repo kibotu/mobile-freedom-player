@@ -31,9 +31,12 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
         switchToExterior(imageUris)
         // switchToInterior(equirectangular)
+
+        autoPlay.setOnCheckedChangeListener { _, isChecked -> sequentialImagePlayer.autoPlay = isChecked }
     }
 
     fun switchToExterior(list: List<Uri>) {
+        autoPlay.visibility = View.VISIBLE
         startInteriorPlayer.isSelected = false
         startExteriorPlayer.isSelected = true
         threeHundredSixtyView.visibility = View.GONE
@@ -42,6 +45,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
     }
 
     fun switchToInterior(filename: String) {
+        autoPlay.visibility = View.GONE
         startInteriorPlayer.isSelected = true
         startExteriorPlayer.isSelected = false
         threeHundredSixtyView.visibility = View.VISIBLE
@@ -65,5 +69,6 @@ class FreedomPlayerActivity : AppCompatActivity() {
         translatable = true
         showControls = false
         swipeSpeed = 0.7f
+        blurLetterbox = true
     }
 }
