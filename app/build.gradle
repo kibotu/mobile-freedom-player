@@ -23,6 +23,30 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    signingConfigs {
+        try {
+            debug {
+                storeFile file(CORE_DEBUG_KEYSYORE_PATH)
+                storePassword CORE_DEBUG_STORE_PASSWORD
+                keyAlias CORE_DEBUG_KEYSTORE_ALLIAS
+                keyPassword CORE_DEBUG_KEY_PASSWORD
+            }
+        }
+        catch (final ignored) {
+            throw new InvalidUserDataException('You should define DEBUG_KEYSTORE_ALLIAS, DEBUG_STORE_PASSWORD, DEBUG_KEY_PASSWORD in gradle.properties.')
+        }
+        try {
+            release {
+                storeFile file(CORE_RELEASE_KEYSYORE_PATH)
+                storePassword CORE_RELEASE_STORE_PASSWORD
+                keyAlias CORE_RELEASE_KEYSTORE_ALIAS
+                keyPassword CORE_RELEASE_KEY_PASSWORD
+            }
+        } catch (final ignored) {
+            throw new InvalidUserDataException('You should define RELEASE_KEYSTORE_ALIAS, RELEASE_STORE_PASSWORD, RELEASE_KEY_PASSWORD in gradle.properties.')
+        }
+    }
 }
 
 dependencies {
