@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.exozet.parseAssetFile
 import com.exozet.sequentialimage.player.SequentialImagePlayer
 import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayer
+import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayerActivity
 import kotlinx.android.synthetic.main.freedom_player_main_activity.*
 
 class FreedomPlayerActivity : AppCompatActivity() {
@@ -43,7 +44,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
     private fun startThreeHundredSixtyPlayer(filename: String) {
         threeHundredSixtyView.uri = parseAssetFile(filename)
         threeHundredSixtyView.projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE
-        threeHundredSixtyView.interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH
+        threeHundredSixtyView.interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_TOUCH
     }
 
     fun startSequentialPlayer(list: List<String>) {
