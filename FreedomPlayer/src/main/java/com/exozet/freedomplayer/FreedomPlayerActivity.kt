@@ -3,9 +3,8 @@ package com.exozet.freedomplayer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.exozet.parseAssetFile
-import com.exozet.sequentialimage.player.SequentialImagePlayer
+import com.exozet.sequentialimage.player.Builder
 import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayer
-import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayerActivity
 import kotlinx.android.synthetic.main.freedom_player_main_activity.*
 
 class FreedomPlayerActivity : AppCompatActivity() {
@@ -48,7 +47,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
     }
 
     fun startSequentialPlayer(list: List<String>) {
-        SequentialImagePlayer
+        Builder
                 .with(this)
                 // .internalStorageFiles(list)
                 .assetFiles(list)
