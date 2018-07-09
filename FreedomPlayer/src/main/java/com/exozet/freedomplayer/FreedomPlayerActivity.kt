@@ -4,7 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.exozet.parseAssetFile
+import com.exozet.threehundredsixty.player.parseAssetFile
 import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayer
 import kotlinx.android.synthetic.main.freedom_player_main_activity.*
 
