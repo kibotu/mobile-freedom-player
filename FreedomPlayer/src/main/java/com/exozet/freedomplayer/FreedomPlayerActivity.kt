@@ -53,16 +53,17 @@ class FreedomPlayerActivity : AppCompatActivity() {
         uri = parseAssetFile(filename)
         projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE
         interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH
+        showControls = true
     }
 
     private fun startSequentialPlayer(list: List<Uri>) = with(sequentialImagePlayer) {
         imageUris = list.toTypedArray()
         autoPlay = true
-        fps = 25
+        fps = 30
         playBackwards = false
         zoomable = true
         translatable = true
         showControls = false
-        swipeSpeed = 1f
+        swipeSpeed = 0.7f
     }
 }
