@@ -16,8 +16,17 @@ class FreedomPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.freedom_player_main_activity)
 
+        exit.setOnClickListener {
+            finish()
+        }
+
         parameter = intent?.extras?.getParcelable(Parameter::class.java.canonicalName)
                 ?: return
+
+        when (parameter.startPlayer) {
+            SEQUENTIAL_IMAGE_PLAYER -> switchToExterior()
+            THREE_HUNDRED_SIXTY_PLAYER -> switchToInterior()
+        }
 
         startExteriorPlayer.setOnClickListener {
             switchToExterior()
@@ -25,15 +34,6 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
         startInteriorPlayer.setOnClickListener {
             switchToInterior()
-        }
-
-        exit.setOnClickListener {
-            finish()
-        }
-
-        when (parameter.startPlayer) {
-            SEQUENTIAL_IMAGE_PLAYER -> switchToExterior()
-            THREE_HUNDRED_SIXTY_PLAYER -> switchToInterior()
         }
 
         autoPlay.setOnCheckedChangeListener { _, isChecked -> sequentialImagePlayer.autoPlay = isChecked }
