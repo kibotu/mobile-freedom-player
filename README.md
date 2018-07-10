@@ -7,19 +7,19 @@ Interior- and exterior player.
 # How to use
 
         FreedomPlayerActivity.startActivity(this, Parameter(
-                startPlayer = FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER, // default: FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER
+                startPlayer = FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER, // SEQUENTIAL_IMAGE_PLAYER, THREE_HUNDRED_SIXTY_PLAYER, default: FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER
                 threeHundredSixtyUri = parseAssetFile("equirectangular.jpg"),
-                projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE,
-                interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH,
-                showControls = false,
-                sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(),
-                autoPlay = true,
-                fps = 30,
-                playBackwards = false,
-                zoomable = true,
-                translatable = true,
-                swipeSpeed = 0.8f,
-                blurLetterbox = true
+                projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE, // PROJECTION_MODE_SPHERE, PROJECTION_MODE_MULTI_FISH_EYE_HORIZONTAL, PROJECTION_MODE_MULTI_FISH_EYE_VERTICAL
+                interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH, // INTERACTIVE_MODE_TOUCH, INTERACTIVE_MODE_MOTION, INTERACTIVE_MODE_MOTION_WITH_TOUCH, default: INTERACTIVE_MODE_MOTION_WITH_TOUCH
+                showControls = false, // shows autoPlay and motion buttons, default false
+                sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(), 
+                autoPlay = true, // default: true
+                fps = 30, // [1:60] default: 30
+                playBackwards = false, // default: false
+                zoomable = true, // default: true
+                translatable = true, // default: true
+                swipeSpeed = 0.8f, // default 1f
+                blurLetterbox = true // default: true
         ))
      
 # How to install (tbd)
