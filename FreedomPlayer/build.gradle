@@ -32,6 +32,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'com.android.support.constraint:constraint-layout:2.0.0-alpha1'
 
-    implementation project(':ThreeHundertSixtyPlayer')
-    implementation project(':SequentialImagePlayer')
+    api project(':ThreeHundertSixtyPlayer')
+    api project(':SequentialImagePlayer')
 }

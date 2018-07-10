@@ -6,7 +6,21 @@ Interior- and exterior player.
 
 # How to use
 
-TODO
+        FreedomPlayerActivity.startActivity(this, Parameter(
+                startPlayer = FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER, // default: FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER
+                threeHundredSixtyUri = parseAssetFile("equirectangular.jpg"),
+                projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE,
+                interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH,
+                showControls = false,
+                sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(),
+                autoPlay = true,
+                fps = 30,
+                playBackwards = false,
+                zoomable = true,
+                translatable = true,
+                swipeSpeed = 0.8f,
+                blurLetterbox = true
+        ))
      
 # How to install (tbd)
 

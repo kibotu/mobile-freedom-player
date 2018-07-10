@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "aid": "abcdef",
+  "interior": [
+    {
+      "quality": "original",
+      "fps": 60,
+      "created": "10.7.2018+",
+      "camera_start_rotation": "front",
+      "preview": "https://s3.mobile.de/aaid/interior/abcdef_preview.png",
+      "images": [
+        "https://s3.mobile.de/aaid/interior/abcdef_mdpi_01.png",
+        "https://s3.mobile.de/aaid/interior/abcdef_mdpi_02.png"
+      ]
+    },
+    {
+      "quality": "low",
+      "fps": "24",
+      "created": "10.7.2018+",
+      "camera_start_rotation": "front",
+      "preview": "https://s3.mobile.de/aaid/interior/abcdef_preview.png",
+      "images": [
+        "https://s3.mobile.de/aaid/interior/abcdef_low_01.png",
+        "https://s3.mobile.de/aaid/interior/abcdef_low_02.png"
+      ]
+    },
+    {
+      "quality": "high",
+      "fps": "30",
+      "created": "10.7.2018+",
+      "camera_start_rotation": "front",
+      "preview": "https://s3.mobile.de/aaid/interior/abcdef_preview.png",
+      "images": [
+        "https://s3.mobile.de/aaid/interior/abcdef_high_01.png",
+        "https://s3.mobile.de/aaid/interior/abcdef_high_02.png"
+      ]
+    }
+  ],
+  "exterior": [
+    {
+      "quality": "original",
+      "created": "10.7.2018+",
+      "camera_start_rotation": "back",
+      "preview": "https://s3.mobile.de/aaid/exterior/abcdef_preview.png",
+      "image": "https://s3.mobile.de/aaid/exterior/abcdef_mdpi.png"
+    },
+    {
+      "quality": "low",
+      "created": "10.7.2018+",
+      "camera_start_rotation": "back",
+      "preview": "https://s3.mobile.de/aaid/exterior/abcdef_preview.png",
+      "image": "https://s3.mobile.de/aaid/exterior/abcdef_low.png"
+    },
+    {
+      "quality": "high",
+      "created": "10.7.2018+",
+      "camera_start_rotation": "back",
+      "preview": "https://s3.mobile.de/aaid/exterior/abcdef_preview.png",
+      "image": "https://s3.mobile.de/aaid/exterior/abcdef_high.png"
+    }
+  ]
+}
