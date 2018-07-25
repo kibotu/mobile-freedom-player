@@ -3,7 +3,6 @@ package com.exozet.freedomplayer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayer
@@ -63,7 +62,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
         projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE
         interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH
         showControls = true
-        onCameraRotation = { pitch, yaw, roll ->  degreeIndicator.rotation = yaw }
+        onCameraRotation = { pitch, yaw, roll -> degreeIndicator.rotation = -yaw }
     }
 
     private fun startSequentialPlayer() = with(sequentialImagePlayer) {
