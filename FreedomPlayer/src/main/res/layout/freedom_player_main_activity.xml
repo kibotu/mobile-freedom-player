@@ -47,15 +47,6 @@
         app:srcCompat="@drawable/ic_exit" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/bracket"
-        android:layout_width="21dp"
-        android:layout_height="21dp"
-        android:layout_marginBottom="38dp"
-        app:layout_constraintBottom_toTopOf="@+id/degreeIndicator"
-        app:layout_constraintEnd_toEndOf="@+id/degreeIndicator"
-        app:srcCompat="@drawable/ic_bracket" />
-
-    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/degreeIndicator"
         android:layout_width="30dp"
         android:layout_height="30dp"
