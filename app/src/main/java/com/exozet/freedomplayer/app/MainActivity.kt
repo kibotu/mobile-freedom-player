@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
         FreedomPlayerActivity.startActivity(this, Parameter(
                 startPlayer = FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER,
-                threeHundredSixtyUri = parseAssetFile("equirectangular.jpg"),
+                threeHundredSixtyUri = parseAssetFile("interior_example.jpg"),
                 projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE,
                 interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH,
                 showControls = true,
