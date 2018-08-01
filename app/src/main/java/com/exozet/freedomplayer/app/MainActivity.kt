@@ -14,8 +14,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         FreedomPlayerActivity.startActivity(this, Parameter(
-                startPlayer = FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER,
-                threeHundredSixtyUri = parseAssetFile("interior_example.jpg"),
+                startPlayer = FreedomPlayerActivity.THREE_HUNDRED_SIXTY_PLAYER,
+                // threeHundredSixtyUri = parseAssetFile("interior_example.jpg"),
+                threeHundredSixtyUri = Uri.parse("http://mobile-de-360-nopasswd.test7.exozet.com/test.json"),
                 projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE,
                 interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH,
                 showControls = true,

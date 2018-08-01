@@ -1,0 +1,19 @@
+{
+    "id": 83,
+    "adId": "test",
+    "state": null,
+    "imageMedia": {
+        "id": 112,
+        "publicUrls": {
+            "default_small": "http://35.198.166.28:9000/app/default/0001/01/thumb_112_default_small.jpeg",
+            "default_admin_list": "http://35.198.166.28:9000/app/default/0001/01/thumb_112_default_admin_list.jpeg",
+            "default_admin_thumbnail": "http://35.198.166.28:9000/app/default/0001/01/thumb_112_default_admin_thumbnail.jpeg",
+            "default_admin_hd": "http://35.198.166.28:9000/app/default/0001/01/thumb_112_default_admin_hd.jpeg",
+            "reference": "http://35.198.166.28:9000/app/default/0001/01/b73aa23b8c1371500b2959bdaf258ed65aea653d.jpeg"
+        }
+    },
+    "createdAt": "2018-07-31T13:49:51+02:00",
+    "meta": {
+        "key": "value"
+    }
+}
