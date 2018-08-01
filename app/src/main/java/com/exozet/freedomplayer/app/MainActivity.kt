@@ -15,7 +15,8 @@ class MainActivity : AppCompatActivity() {
 
         FreedomPlayerActivity.startActivity(this, Parameter(
                 startPlayer = FreedomPlayerActivity.THREE_HUNDRED_SIXTY_PLAYER,
-                // threeHundredSixtyUri = parseAssetFile("interior_example.jpg"),
+//                 threeHundredSixtyUri = parseAssetFile("equirectangular.jpg"),
+//                 threeHundredSixtyUri = parseAssetFile("interior_example.jpg"),
                 threeHundredSixtyUri = Uri.parse("http://mobile-de-360-nopasswd.test7.exozet.com/test.json"),
                 projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE,
                 interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH,
