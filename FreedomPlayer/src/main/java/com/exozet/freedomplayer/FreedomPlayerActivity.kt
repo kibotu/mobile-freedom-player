@@ -183,7 +183,6 @@ class FreedomPlayerActivity : AppCompatActivity() {
      *  interior
      *      imageMedia.publicUrls"exterior_view_medium": "https://storage.googleapis.com/preview-mobile-de/exterior_view/0001/01/thumb_541_exterior_view_medium.jpeg",
      *
-     * interior_view_medium
      * interior_view_2160
      * interior_view_1080
      * interior_view_720
@@ -207,13 +206,9 @@ class FreedomPlayerActivity : AppCompatActivity() {
             log("height=$height => interior_view_720 ${publicUrls?.interior_view_720}")
             publicUrls?.interior_view_720
         }
-        height >= 480 -> {
+        else -> {
             log("height=$height => interior_view_480 ${publicUrls?.interior_view_480}")
             publicUrls?.interior_view_480
-        }
-        else -> {
-            log("height=$height => interior_view_medium ${publicUrls?.interior_view_medium}")
-            publicUrls?.interior_view_medium
         }
     }
 
@@ -245,13 +240,9 @@ class FreedomPlayerActivity : AppCompatActivity() {
             log("height=$height => exterior_view_720 ${publicUrls?.exterior_view_720}")
             publicUrls?.exterior_view_720
         }
-        height >= 480 -> {
+        else -> {
             log("height=$height => exterior_view_480 ${publicUrls?.exterior_view_480}")
             publicUrls?.exterior_view_480
-        }
-        else -> {
-            log("height=$height => exterior_view_medium ${publicUrls?.exterior_view_medium}")
-            publicUrls?.exterior_view_medium
         }
     }
 
@@ -272,7 +263,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
         const val SEQUENTIAL_IMAGE_PLAYER = "SEQUENTIAL_IMAGE_PLAYER"
     }
 
-    var debug = true
+    var debug = false
 
     private val TAG = this::class.java.simpleName
 

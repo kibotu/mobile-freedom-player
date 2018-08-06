@@ -25,8 +25,6 @@ internal data class Media(
 )
 
 internal data class PublicUrls(
-        var interior_view_medium: String? = "",
-        var exterior_view_medium: String? = "",
         var exterior_view_2160: String? = "",
         var interior_view_2160: String? = "",
         var exterior_view_1080: String? = "",
