@@ -67,6 +67,16 @@ class FreedomPlayerActivity : AppCompatActivity() {
         if (hasFocus) hideSystemUI()
     }
 
+    override fun onResume() {
+        super.onResume()
+        sequentialImagePlayer.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sequentialImagePlayer.onPause()
+    }
+
     fun switchToExterior() {
         autoPlay.visibility = if (parameter.showControls) View.VISIBLE else View.GONE
         startInteriorPlayer.isSelected = false
