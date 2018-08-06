@@ -93,7 +93,13 @@ class FreedomPlayerActivity : AppCompatActivity() {
         projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE
         interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH
         showControls = true
-        onCameraRotation = { pitch, yaw, roll -> degreeIndicator.rotation = -yaw }
+        onCameraRotation = { pitch, yaw, roll ->
+            try {
+                degreeIndicator.rotation = -yaw
+            } catch (ignore: Exception) {
+                this@FreedomPlayerActivity.log(ignore.message)
+            }
+        }
     }
 
     private fun startSequentialPlayer() = with(sequentialImagePlayer) {
@@ -245,9 +251,9 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
     private val TAG = this::class.java.simpleName
 
-    private fun log(message: String) {
+    private fun log(message: String?) {
         if (debug)
-            Log.d(TAG, message)
+            Log.d(TAG, message ?: "")
     }
 
     /**
@@ -257,6 +263,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
         if (SDK_INT < KITKAT) return
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
