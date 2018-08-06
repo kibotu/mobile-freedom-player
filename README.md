@@ -8,11 +8,14 @@ Interior- and exterior player.
 
         FreedomPlayerActivity.startActivity(this, Parameter(
                 startPlayer = FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER, // SEQUENTIAL_IMAGE_PLAYER, THREE_HUNDRED_SIXTY_PLAYER, default: FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER
-                threeHundredSixtyUri = parseAssetFile("equirectangular.jpg"),
+                // threeHundredSixtyUri = parseAssetFile("equirectangular.jpg"), // load local asset file
+                threeHundredSixtyUri = parseAssetFile("interior_example.jpg"),  // load local asset file
+                // threeHundredSixtyUri = Uri.parse("https://storage.googleapis.com/preview-mobile-de/default/0001/01/b66f74bd094963f1b07b297508cfdeae1262cc7f.json"), // load using interior.json
                 projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE, // PROJECTION_MODE_SPHERE, PROJECTION_MODE_MULTI_FISH_EYE_HORIZONTAL, PROJECTION_MODE_MULTI_FISH_EYE_VERTICAL
                 interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH, // INTERACTIVE_MODE_TOUCH, INTERACTIVE_MODE_MOTION, INTERACTIVE_MODE_MOTION_WITH_TOUCH, default: INTERACTIVE_MODE_MOTION_WITH_TOUCH
                 showControls = false, // shows autoPlay and motion buttons, default false
-                sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(), 
+                sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(), // load from list of local files
+                // sequentialImageUri = Uri.parse("https://storage.googleapis.com/preview-mobile-de/default/0001/01/7eb02f09747a624a50d3d287d2354610251ec2ad.json"), // load using exterior.json
                 autoPlay = true, // default: true
                 fps = 30, // [1:60] default: 30
                 playBackwards = false, // default: false
@@ -21,7 +24,7 @@ Interior- and exterior player.
                 swipeSpeed = 0.8f, // default 1f
                 blurLetterbox = true // default: true
         ))
-     
+        
 # How to install (tbd)
 
 Atm only as module
