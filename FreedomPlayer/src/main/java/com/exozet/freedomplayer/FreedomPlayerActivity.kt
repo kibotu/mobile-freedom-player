@@ -2,15 +2,23 @@ package com.exozet.freedomplayer
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.freedom_player_main_activity.*
+
 
 class FreedomPlayerActivity : AppCompatActivity() {
 
     lateinit var parameter: Parameter
+
+    var height: Int = 2048
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +31,21 @@ class FreedomPlayerActivity : AppCompatActivity() {
         parameter = intent?.extras?.getParcelable(Parameter::class.java.canonicalName)
                 ?: return
 
-        when (parameter.startPlayer) {
-            SEQUENTIAL_IMAGE_PLAYER -> switchToExterior()
-            THREE_HUNDRED_SIXTY_PLAYER -> switchToInterior()
-        }
+        window.decorView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                if (window.decorView.viewTreeObserver.isAlive)
+                    window.decorView.viewTreeObserver.removeOnPreDrawListener(this)
+
+                height = Math.min(window.decorView.width, window.decorView.height)
+
+                when (parameter.startPlayer) {
+                    SEQUENTIAL_IMAGE_PLAYER -> switchToExterior()
+                    THREE_HUNDRED_SIXTY_PLAYER -> switchToInterior()
+                }
+
+                return false
+            }
+        })
 
         startExteriorPlayer.setOnClickListener {
             switchToExterior()
@@ -58,7 +77,11 @@ class FreedomPlayerActivity : AppCompatActivity() {
     }
 
     private fun startThreeHundredSixtyPlayer() = with(threeHundredSixtyView) {
-        uri = parameter.threeHundredSixtyUri
+        when {
+            parameter.threeHundredSixtyUri.toString().startsWith("http://") -> loadInteriorJson(parameter.threeHundredSixtyUri) { uri = it }
+            parameter.threeHundredSixtyUri.toString().startsWith("https://") -> loadInteriorJson(parameter.threeHundredSixtyUri) { uri = it }
+            else -> uri = parameter.threeHundredSixtyUri
+        }
         projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE
         interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH
         showControls = true
@@ -66,7 +89,10 @@ class FreedomPlayerActivity : AppCompatActivity() {
     }
 
     private fun startSequentialPlayer() = with(sequentialImagePlayer) {
-        imageUris = parameter.sequentialImageUris
+        parameter.sequentialImageUris?.let {
+            imageUris = it
+        }
+        parameter.sequentialImageUri?.let { loadExteriorJson(it) { imageUris = it } }
         autoPlay = parameter.autoPlay
         fps = parameter.fps
         playBackwards = parameter.playBackwards
@@ -77,11 +103,142 @@ class FreedomPlayerActivity : AppCompatActivity() {
         blurLetterbox = parameter.blurLetterbox
     }
 
+    private fun loadInteriorJson(jsonUri: Uri, block: (Uri) -> Unit) {
+
+        RequestProvider.interiorJson(jsonUri).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+
+                    log("interior=$it")
+
+                    var uri: Uri? = Uri.parse(interiorPublicUrlByScreenHeight(height, it?.imageMedia?.publicUrls)
+                            ?: "")
+
+                    if (uri.toString().isNullOrEmpty())
+                        Log.e(TAG, "error loading interiorJson public urls")
+
+                    block(uri!!)
+
+                }, { t ->
+                    Log.e(TAG, t.message)
+                    t.printStackTrace()
+                })
+    }
+
+    private fun loadExteriorJson(jsonUri: Uri, block: (Array<Uri>) -> Unit) {
+
+        RequestProvider.exteriorJson(jsonUri).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+
+                    log("exterior=$it")
+
+                    var uris: Array<Uri> = it?.imageCollection?.galleryHasMedias?.map {
+                        Uri.parse(exteriorPublicUrlByScreenHeight(height, it?.media?.publicUrls)
+                                ?: "")
+                    }?.toTypedArray() ?: arrayOf()
+
+                    if (uris.isEmpty())
+                        Log.e(TAG, "error loading exteriorJson public urls")
+
+                    block(uris)
+
+                }, { t ->
+                    Log.e(TAG, t.message)
+                    t.printStackTrace()
+                })
+    }
+
+    /**
+     *  interior
+     *      imageMedia.publicUrls"exterior_view_medium": "https://storage.googleapis.com/preview-mobile-de/exterior_view/0001/01/thumb_541_exterior_view_medium.jpeg",
+     *
+     * interior_view_medium
+     * interior_view_2160
+     * interior_view_1080
+     * interior_view_720
+     * interior_view_480
+     * reference
+     *
+     * @param window
+     * @param publicUrls
+     * @returns uri
+     */
+    internal fun interiorPublicUrlByScreenHeight(height: Int, publicUrls: PublicUrls?): String? = when {
+        height >= 2160 -> {
+            log("height=$height => interior_view_2160 ${publicUrls?.interior_view_2160}")
+            publicUrls?.interior_view_2160
+        }
+        height >= 1080 -> {
+            log("height=$height => interior_view_1080 ${publicUrls?.interior_view_1080}")
+            publicUrls?.interior_view_1080
+        }
+        height >= 720 -> {
+            log("height=$height => interior_view_720 ${publicUrls?.interior_view_720}")
+            publicUrls?.interior_view_720
+        }
+        height >= 480 -> {
+            log("height=$height => interior_view_480 ${publicUrls?.interior_view_480}")
+            publicUrls?.interior_view_480
+        }
+        else -> {
+            log("height=$height => interior_view_medium ${publicUrls?.interior_view_medium}")
+            publicUrls?.interior_view_medium
+        }
+    }
+
+    /**
+     *  exterior
+     *      imageCollection.galleryHasMedias.media.publicUrls
+     *
+     * exterior_view_medium
+     * exterior_view_2160
+     * exterior_view_1080
+     * exterior_view_720
+     * exterior_view_480
+     * reference
+     *
+     * @param window
+     * @param publicUrls
+     * @returns uri
+     */
+    internal fun exteriorPublicUrlByScreenHeight(height: Int, publicUrls: PublicUrls?): String? = when {
+        height >= 2160 -> {
+            log("height=$height => exterior_view_2160 ${publicUrls?.exterior_view_2160}")
+            publicUrls?.exterior_view_2160
+        }
+        height >= 1080 -> {
+            log("height=$height => exterior_view_1080 ${publicUrls?.exterior_view_1080}")
+            publicUrls?.exterior_view_1080
+        }
+        height >= 720 -> {
+            log("height=$height => exterior_view_720 ${publicUrls?.exterior_view_720}")
+            publicUrls?.exterior_view_720
+        }
+        height >= 480 -> {
+            log("height=$height => exterior_view_480 ${publicUrls?.exterior_view_480}")
+            publicUrls?.exterior_view_480
+        }
+        else -> {
+            log("height=$height => exterior_view_medium ${publicUrls?.exterior_view_medium}")
+            publicUrls?.exterior_view_medium
+        }
+    }
+
     companion object {
 
         fun startActivity(context: Context, parameter: Parameter) = context.startActivity(Intent(context, FreedomPlayerActivity::class.java).apply { putExtra(Parameter::class.java.canonicalName, parameter) })
 
         const val THREE_HUNDRED_SIXTY_PLAYER = "THREE_HUNDRED_SIXTY_PLAYER"
         const val SEQUENTIAL_IMAGE_PLAYER = "SEQUENTIAL_IMAGE_PLAYER"
+    }
+
+    var debug = true
+
+    private val TAG = this::class.java.simpleName
+
+    private fun log(message: String) {
+        if (debug)
+            Log.d(TAG, message)
     }
 }

@@ -15,7 +15,8 @@ data class Parameter(
         @ProjectionMode val projectionMode: Int = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE,
         @InteractionMode val interactionMode: Int = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH,
         val showControls: Boolean = false,
-        val sequentialImageUris: Array<Uri>,
+        val sequentialImageUris: Array<Uri>? = null,
+        val sequentialImageUri: Uri? = null,
         val autoPlay: Boolean = true,
         val fps: Int = 30,
         val playBackwards: Boolean = false,
@@ -31,6 +32,7 @@ data class Parameter(
             parcel.readInt(),
             parcel.readByte() != 0.toByte(),
             parcel.createTypedArray(Uri.CREATOR),
+            parcel.readParcelable(Uri::class.java.classLoader),
             parcel.readByte() != 0.toByte(),
             parcel.readInt(),
             parcel.readByte() != 0.toByte(),
@@ -46,6 +48,7 @@ data class Parameter(
         parcel.writeInt(interactionMode)
         parcel.writeByte(if (showControls) 1 else 0)
         parcel.writeTypedArray(sequentialImageUris, flags)
+        parcel.writeParcelable(sequentialImageUri, flags)
         parcel.writeByte(if (autoPlay) 1 else 0)
         parcel.writeInt(fps)
         parcel.writeByte(if (playBackwards) 1 else 0)
@@ -57,6 +60,11 @@ data class Parameter(
 
     override fun describeContents(): Int {
         return 0
+    }
+
+
+    override fun toString(): String {
+        return "Parameter(startPlayer='$startPlayer', threeHundredSixtyUri=$threeHundredSixtyUri, projectionMode=$projectionMode, interactionMode=$interactionMode, showControls=$showControls, sequentialImageUris=${Arrays.toString(sequentialImageUris)}, sequentialImageUri=$sequentialImageUri, autoPlay=$autoPlay, fps=$fps, playBackwards=$playBackwards, zoomable=$zoomable, translatable=$translatable, swipeSpeed=$swipeSpeed, blurLetterbox=$blurLetterbox)"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -71,6 +79,7 @@ data class Parameter(
         if (interactionMode != other.interactionMode) return false
         if (showControls != other.showControls) return false
         if (!Arrays.equals(sequentialImageUris, other.sequentialImageUris)) return false
+        if (sequentialImageUri != other.sequentialImageUri) return false
         if (autoPlay != other.autoPlay) return false
         if (fps != other.fps) return false
         if (playBackwards != other.playBackwards) return false
@@ -88,7 +97,8 @@ data class Parameter(
         result = 31 * result + projectionMode
         result = 31 * result + interactionMode
         result = 31 * result + showControls.hashCode()
-        result = 31 * result + Arrays.hashCode(sequentialImageUris)
+        result = 31 * result + (sequentialImageUris?.let { Arrays.hashCode(it) } ?: 0)
+        result = 31 * result + (sequentialImageUri?.hashCode() ?: 0)
         result = 31 * result + autoPlay.hashCode()
         result = 31 * result + fps
         result = 31 * result + playBackwards.hashCode()
@@ -108,4 +118,6 @@ data class Parameter(
             return arrayOfNulls(size)
         }
     }
+
+
 }
