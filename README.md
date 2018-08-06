@@ -33,11 +33,9 @@ Atm only as module
         api project(':FreedomPlayer')
     }
     
-# Changelog
+# [interior.json](app/src/main/assets/interiorv2.json)
 
-# TODO
-
-* remove stroke between buttons: https://gist.github.com/CiTuX/5031751
+# [exterior.json](app/src/main/assets/exteriorv2.json)
 
 # Related Project
 
