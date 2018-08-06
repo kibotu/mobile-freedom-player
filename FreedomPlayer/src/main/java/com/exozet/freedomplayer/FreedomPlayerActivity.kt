@@ -116,6 +116,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
         showControls = false // parameter.showControls
         swipeSpeed = parameter.swipeSpeed
         blurLetterbox = parameter.blurLetterbox
+        onProgressChanged = { degreeIndicator.rotation = it * 360 }
     }
 
     var interiorJsonRequest: Disposable? = null
