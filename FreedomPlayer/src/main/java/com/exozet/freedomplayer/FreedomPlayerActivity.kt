@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayer
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.freedom_player_main_activity.*
 
@@ -117,18 +118,20 @@ class FreedomPlayerActivity : AppCompatActivity() {
         blurLetterbox = parameter.blurLetterbox
     }
 
+    var interiorJsonRequest: Disposable? = null
+
     private fun loadInteriorJson(jsonUri: Uri, block: (Uri) -> Unit) {
 
-        RequestProvider.interiorJson(jsonUri).subscribeOn(Schedulers.io())
+        interiorJsonRequest = RequestProvider.interiorJson(jsonUri).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
 
                     log("interior=$it")
 
-                    var uri: Uri? = Uri.parse(interiorPublicUrlByScreenHeight(height, it?.imageMedia?.publicUrls)
+                    val uri: Uri? = Uri.parse(interiorPublicUrlByScreenHeight(height, it?.imageMedia?.publicUrls)
                             ?: "")
 
-                    if (uri.toString().isNullOrEmpty())
+                    if (uri.toString().isEmpty())
                         Log.e(TAG, "error loading interiorJson public urls")
 
                     block(uri!!)
@@ -139,15 +142,17 @@ class FreedomPlayerActivity : AppCompatActivity() {
                 })
     }
 
+    var exteriorJsonRequest: Disposable? = null
+
     private fun loadExteriorJson(jsonUri: Uri, block: (Array<Uri>) -> Unit) {
 
-        RequestProvider.exteriorJson(jsonUri).subscribeOn(Schedulers.io())
+        exteriorJsonRequest = RequestProvider.exteriorJson(jsonUri).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
 
                     log("exterior=$it")
 
-                    var uris: Array<Uri> = it?.imageCollection?.galleryHasMedias?.map {
+                    val uris: Array<Uri> = it?.imageCollection?.galleryHasMedias?.map {
                         Uri.parse(exteriorPublicUrlByScreenHeight(height, it?.media?.publicUrls)
                                 ?: "")
                     }?.toTypedArray() ?: arrayOf()
@@ -237,6 +242,15 @@ class FreedomPlayerActivity : AppCompatActivity() {
             log("height=$height => exterior_view_medium ${publicUrls?.exterior_view_medium}")
             publicUrls?.exterior_view_medium
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (interiorJsonRequest?.isDisposed == false)
+            interiorJsonRequest?.dispose()
+        if (exteriorJsonRequest?.isDisposed == false)
+            exteriorJsonRequest?.dispose()
     }
 
     companion object {
