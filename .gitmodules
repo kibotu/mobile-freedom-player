@@ -4,3 +4,6 @@
 [submodule "android-walkthroug-player"]
 	path = android-walkthroug-player
 	url = git@git.exozet.com:mobile-de/POC/android-walkthroug-player.git
+[submodule "Android-Dependencies"]
+	path = Android-Dependencies
+	url = https://github.com/exozet/Android-Dependencies.git
