@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/background"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.exozet.sequentialimage.player.SequentialImagePlayer
+    <com.exozet.sequentialimageplayer.SequentialImagePlayer
         android:id="@+id/sequentialImagePlayer"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -35,7 +35,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/exit"
         android:layout_width="38dp"
         android:layout_height="38dp"
@@ -46,7 +46,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_exit" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/degreeIndicator"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -57,7 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_360_degree_indicator" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/startExteriorPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/startInteriorPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
         tools:background="@drawable/freedom_interior_button_active"
         tools:textColor="@android:color/white" />
 
-    <androidx.appcompat.widget.SwitchCompat
+    <Switch
         android:id="@+id/autoPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

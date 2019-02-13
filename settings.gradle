@@ -1,4 +1,1 @@
-include ':app', ':FreedomPlayer', ':ThreeHundertSixtyPlayer', ':SequentialImagePlayer'
-
-project(':ThreeHundertSixtyPlayer').projectDir = new File('android-360-player/ThreeHundertSixtyPlayer')
-project(':SequentialImagePlayer').projectDir = new File('android-walkthroug-player/SequentialImagePlayer')
+include ':app', ':FreedomPlayer'
