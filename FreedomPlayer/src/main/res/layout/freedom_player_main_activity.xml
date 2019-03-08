@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/preview" />
 
-    <com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayer
+    <com.exozet.threehundredsixtyplayer.ThreeHundredSixtyPlayer
         android:id="@+id/threeHundredSixtyView"
         android:layout_width="0dp"
         android:layout_height="0dp"
