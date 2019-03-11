@@ -3,43 +3,44 @@ package com.exozet.freedomplayer
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
-import com.exozet.threehundredsixty.player.InteractionMode
-import com.exozet.threehundredsixty.player.ProjectionMode
-import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayer
+import com.exozet.threehundredsixtyplayer.InteractionMode
+import com.exozet.threehundredsixtyplayer.ProjectionMode
+import com.exozet.threehundredsixtyplayer.ThreeHundredSixtyPlayer
 import java.util.*
 
 
 data class Parameter(
-        @PlayerTypes val startPlayer: String = FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER,
-        val threeHundredSixtyUri: Uri,
-        @ProjectionMode val projectionMode: Int = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE,
-        @InteractionMode val interactionMode: Int = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH,
-        val showControls: Boolean = false,
-        val sequentialImageUris: Array<Uri>? = null,
-        val sequentialImageUri: Uri? = null,
-        val autoPlay: Boolean = true,
-        val fps: Int = 30,
-        val playBackwards: Boolean = false,
-        val zoomable: Boolean = true,
-        val translatable: Boolean = true,
-        val swipeSpeed: Float = 0.8f,
-        val blurLetterbox: Boolean = true
+    @PlayerTypes val startPlayer: String = FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER,
+    val threeHundredSixtyUri: Uri,
+    @ProjectionMode val projectionMode: Int = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE,
+    @InteractionMode val interactionMode: Int = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH,
+    val showControls: Boolean = false,
+    val sequentialImageUris: Array<Uri>? = null,
+    val sequentialImageUri: Uri? = null,
+    val autoPlay: Boolean = true,
+    val fps: Int = 30,
+    val playBackwards: Boolean = false,
+    val zoomable: Boolean = true,
+    val translatable: Boolean = true,
+    val swipeSpeed: Float = 0.8f,
+    val blurLetterbox: Boolean = true
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readParcelable(Uri::class.java.classLoader),
-            parcel.readInt(),
-            parcel.readInt(),
-            parcel.readByte() != 0.toByte(),
-            parcel.createTypedArray(Uri.CREATOR),
-            parcel.readParcelable(Uri::class.java.classLoader),
-            parcel.readByte() != 0.toByte(),
-            parcel.readInt(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readFloat(),
-            parcel.readByte() != 0.toByte())
+        parcel.readString(),
+        parcel.readParcelable(Uri::class.java.classLoader),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readByte() != 0.toByte(),
+        parcel.createTypedArray(Uri.CREATOR),
+        parcel.readParcelable(Uri::class.java.classLoader),
+        parcel.readByte() != 0.toByte(),
+        parcel.readInt(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readFloat(),
+        parcel.readByte() != 0.toByte()
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(startPlayer)
@@ -64,7 +65,9 @@ data class Parameter(
 
 
     override fun toString(): String {
-        return "Parameter(startPlayer='$startPlayer', threeHundredSixtyUri=$threeHundredSixtyUri, projectionMode=$projectionMode, interactionMode=$interactionMode, showControls=$showControls, sequentialImageUris=${Arrays.toString(sequentialImageUris)}, sequentialImageUri=$sequentialImageUri, autoPlay=$autoPlay, fps=$fps, playBackwards=$playBackwards, zoomable=$zoomable, translatable=$translatable, swipeSpeed=$swipeSpeed, blurLetterbox=$blurLetterbox)"
+        return "Parameter(startPlayer='$startPlayer', threeHundredSixtyUri=$threeHundredSixtyUri, projectionMode=$projectionMode, interactionMode=$interactionMode, showControls=$showControls, sequentialImageUris=${Arrays.toString(
+            sequentialImageUris
+        )}, sequentialImageUri=$sequentialImageUri, autoPlay=$autoPlay, fps=$fps, playBackwards=$playBackwards, zoomable=$zoomable, translatable=$translatable, swipeSpeed=$swipeSpeed, blurLetterbox=$blurLetterbox)"
     }
 
     override fun equals(other: Any?): Boolean {

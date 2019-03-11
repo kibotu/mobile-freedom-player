@@ -10,7 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
-import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayer
+import com.exozet.threehundredsixtyplayer.ThreeHundredSixtyPlayer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers

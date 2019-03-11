@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.exozet.freedomplayer.FreedomPlayerActivity
 import com.exozet.freedomplayer.Parameter
-import com.exozet.threehundredsixty.player.ThreeHundredSixtyPlayer
+import com.exozet.threehundredsixtyplayer.ThreeHundredSixtyPlayer
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,7 +13,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        FreedomPlayerActivity.startActivity(this, Parameter(
+        FreedomPlayerActivity.startActivity(
+            this, Parameter(
                 startPlayer = FreedomPlayerActivity.THREE_HUNDRED_SIXTY_PLAYER,
 //                 threeHundredSixtyUri = parseAssetFile("equirectangular.jpg"),
                 threeHundredSixtyUri = parseAssetFile("interior_example.jpg"),
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
                 showControls = true,
 //                sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("default/out%d.png", it)) }.toTypedArray(),
 //                sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(),
-                 sequentialImageUri = Uri.parse("https://storage.googleapis.com/preview-mobile-de/default/0001/14/61b8ec8b30a9ed586f89ef7c1d71e479aadfe46d.json"),
+                sequentialImageUri = Uri.parse("https://storage.googleapis.com/preview-mobile-de/default/0001/14/61b8ec8b30a9ed586f89ef7c1d71e479aadfe46d.json"),
                 autoPlay = true,
                 fps = 17,
                 playBackwards = false,
@@ -31,7 +32,8 @@ class MainActivity : AppCompatActivity() {
                 translatable = true,
                 swipeSpeed = 0.8f,
                 blurLetterbox = true
-        ))
+            )
+        )
 
         finish()
     }
