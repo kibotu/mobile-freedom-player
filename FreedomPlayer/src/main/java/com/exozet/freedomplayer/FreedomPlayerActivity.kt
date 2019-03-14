@@ -15,6 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.freedom_player_main_activity.*
+import org.parceler.Parcels
 
 
 class FreedomPlayerActivity : AppCompatActivity() {
@@ -32,8 +33,8 @@ class FreedomPlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        parameter = intent?.extras?.getParcelable(Parameter::class.java.canonicalName)
-                ?: return
+        parameter = Parcels.unwrap(intent?.extras?.getParcelable(Parameter::class.java.canonicalName))
+            ?: return
 
         window.decorView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
@@ -97,8 +98,16 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
     private fun startThreeHundredSixtyPlayer() = with(threeHundredSixtyView) {
         when {
-            parameter.threeHundredSixtyUri.toString().startsWith("http://") -> loadInteriorJson(parameter.threeHundredSixtyUri) { uri = it }
-            parameter.threeHundredSixtyUri.toString().startsWith("https://") -> loadInteriorJson(parameter.threeHundredSixtyUri) { uri = it }
+            parameter.threeHundredSixtyUri.toString().startsWith("http://") -> loadInteriorJson(
+                parameter.threeHundredSixtyUri ?: Uri.EMPTY
+            ) {
+                uri = it
+            }
+            parameter.threeHundredSixtyUri.toString().startsWith("https://") -> loadInteriorJson(
+                parameter.threeHundredSixtyUri ?: Uri.EMPTY
+            ) {
+                uri = it
+            }
             else -> uri = parameter.threeHundredSixtyUri
         }
         projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE
@@ -134,23 +143,25 @@ class FreedomPlayerActivity : AppCompatActivity() {
     private fun loadInteriorJson(jsonUri: Uri, block: (Uri) -> Unit) {
 
         interiorJsonRequest = RequestProvider.interiorJson(jsonUri).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
 
-                    log("interior=$it")
+                log("interior=$it")
 
-                    val uri: Uri? = Uri.parse(interiorPublicUrlByScreenHeight(height, it?.imageMedia?.publicUrls)
-                            ?: "")
+                val uri: Uri? = Uri.parse(
+                    interiorPublicUrlByScreenHeight(height, it?.imageMedia?.publicUrls)
+                        ?: ""
+                )
 
-                    if (uri.toString().isEmpty())
-                        Log.e(TAG, "error loading interiorJson public urls")
+                if (uri.toString().isEmpty())
+                    Log.e(TAG, "error loading interiorJson public urls")
 
-                    block(uri!!)
+                block(uri!!)
 
-                }, { t ->
-                    Log.e(TAG, t.message)
-                    t.printStackTrace()
-                })
+            }, { t ->
+                Log.e(TAG, t.message)
+                t.printStackTrace()
+            })
     }
 
     var exteriorJsonRequest: Disposable? = null
@@ -158,25 +169,27 @@ class FreedomPlayerActivity : AppCompatActivity() {
     private fun loadExteriorJson(jsonUri: Uri, block: (Array<Uri>) -> Unit) {
 
         exteriorJsonRequest = RequestProvider.exteriorJson(jsonUri).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
 
-                    log("exterior=$it")
+                log("exterior=$it")
 
-                    val uris: Array<Uri> = it?.imageCollection?.galleryHasMedias?.map {
-                        Uri.parse(exteriorPublicUrlByScreenHeight(height, it?.media?.publicUrls)
-                                ?: "")
-                    }?.toTypedArray() ?: arrayOf()
+                val uris: Array<Uri> = it?.imageCollection?.galleryHasMedias?.map {
+                    Uri.parse(
+                        exteriorPublicUrlByScreenHeight(height, it?.media?.publicUrls)
+                            ?: ""
+                    )
+                }?.toTypedArray() ?: arrayOf()
 
-                    if (uris.isEmpty())
-                        Log.e(TAG, "error loading exteriorJson public urls")
+                if (uris.isEmpty())
+                    Log.e(TAG, "error loading exteriorJson public urls")
 
-                    block(uris)
+                block(uris)
 
-                }, { t ->
-                    Log.e(TAG, t.message)
-                    t.printStackTrace()
-                })
+            }, { t ->
+                Log.e(TAG, t.message)
+                t.printStackTrace()
+            })
     }
 
     /**
@@ -257,7 +270,11 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
     companion object {
 
-        fun startActivity(context: Context, parameter: Parameter) = context.startActivity(Intent(context, FreedomPlayerActivity::class.java).apply { putExtra(Parameter::class.java.canonicalName, parameter) })
+        fun startActivity(context: Context, parameter: Parameter) = context.startActivity(
+            Intent(
+                context,
+                FreedomPlayerActivity::class.java
+            ).apply { putExtra(Parameter::class.java.canonicalName, Parcels.wrap(parameter)) })
 
         const val THREE_HUNDRED_SIXTY_PLAYER = "THREE_HUNDRED_SIXTY_PLAYER"
         const val SEQUENTIAL_IMAGE_PLAYER = "SEQUENTIAL_IMAGE_PLAYER"

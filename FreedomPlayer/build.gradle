@@ -127,6 +127,9 @@ dependencies {
     implementation libs.retrofitConverterGson
     implementation libs.okhttp3
     implementation libs.okhttp3LoggingInterceptor
+
+    implementation libs.parceler
+    kapt libs.parcelerProcessor
 }
 
 // region dexcount

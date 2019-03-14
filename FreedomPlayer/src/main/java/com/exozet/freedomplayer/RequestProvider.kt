@@ -29,46 +29,44 @@ internal object RequestProvider {
 
     internal fun interiorJson(uri: Uri): Observable<Interior> = createService(uri).interiorJson(uri.path)
 
-    private fun createService(uri: Uri): ExozetService {
-        return Retrofit.Builder()
-                .baseUrl(uri.scheme + "://" + uri.host)
-                .client(createOkHttpClient(authToken?.let { hashMapOf(Pair("Authorization", "Bearer $it")) }).build())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(ExozetService::class.java)
-    }
+    private fun createService(uri: Uri): ExozetService = Retrofit.Builder()
+        .baseUrl(uri.scheme + "://" + uri.host)
+        .client(createOkHttpClient(authToken?.let { hashMapOf(Pair("Authorization", "Bearer $it")) }).build())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(ExozetService::class.java)
 
     @JvmStatic
     private fun createOkHttpClient(additionalHeader: Map<String, String>? = null, logging: Boolean = true): OkHttpClient.Builder {
         val client = OkHttpClient.Builder()
-                .retryOnConnectionFailure(true)
-                .readTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(15, TimeUnit.SECONDS)
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .apply {
-                    if (logging)
-                        addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log(it) })
-                                .apply {
-                                    level = if (enableLogging)
-                                        HttpLoggingInterceptor.Level.BODY
-                                    else
-                                        HttpLoggingInterceptor.Level.NONE
-                                })
-                }
-                .addNetworkInterceptor {
-                    it.proceed(it.request()
-                            .newBuilder()
-                            .apply {
-                                additionalHeader?.let { headers ->
-                                    for ((key, value) in headers) {
-                                        log("header -> $key : $value")
-                                        header(key, value)
-                                    }
-                                }
+            .retryOnConnectionFailure(true)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .apply {
+                if (logging)
+                    addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { log(it) })
+                        .apply {
+                            level = if (enableLogging)
+                                HttpLoggingInterceptor.Level.BODY
+                            else
+                                HttpLoggingInterceptor.Level.NONE
+                        })
+            }
+            .addNetworkInterceptor {
+                it.proceed(it.request()
+                    .newBuilder()
+                    .apply {
+                        additionalHeader?.let { headers ->
+                            for ((key, value) in headers) {
+                                log("header -> $key : $value")
+                                header(key, value)
                             }
-                            .build())
-                }
+                        }
+                    }
+                    .build())
+            }
 
         application?.get()?.let {
             client.sslSocketFactory(getSslContextForCertificateFile(it, certificateFileName).socketFactory)
