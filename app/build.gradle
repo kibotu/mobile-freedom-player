@@ -13,13 +13,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
-    compileSdkVersion compileSdkVer
-    buildToolsVersion buildToolsVer
+    compileSdkVersion compileSdkVerP
+    buildToolsVersion buildToolsVerP
 
     defaultConfig {
         applicationId "com.exozet.freedomplayer.app"
         minSdkVersion minSdkVer
-        targetSdkVersion targetSdkVer
+        targetSdkVersion targetSdkVerP
         versionCode isCi ? commitCount() : VERSION_CODE
         versionName isCi ? simpleReleaseVersionName() : VERSION_NAME
         vectorDrawables.useSupportLibrary = true

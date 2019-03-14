@@ -13,12 +13,12 @@ apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
 
-    compileSdkVersion compileSdkVer
-    buildToolsVersion buildToolsVer
+    compileSdkVersion compileSdkVerP
+    buildToolsVersion buildToolsVerP
 
     defaultConfig {
         minSdkVersion minSdkVer
-        targetSdkVersion targetSdkVer
+        targetSdkVersion targetSdkVerP
         versionCode isCi ? commitCount() : VERSION_CODE
         versionName isCi ? simpleReleaseVersionName() : VERSION_NAME
         vectorDrawables.useSupportLibrary = true

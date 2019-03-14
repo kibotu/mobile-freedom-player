@@ -29,8 +29,8 @@ class MainActivity : AppCompatActivity() {
             interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH,
             showControls = true,
 //                sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("default/out%d.png", it)) }.toTypedArray(),
-//                sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(),
-            sequentialImageUri = Uri.parse("https://storage.googleapis.com/preview-mobile-de/default/0001/14/61b8ec8b30a9ed586f89ef7c1d71e479aadfe46d.json"),
+                sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(),
+//            sequentialImageUri = Uri.parse("https://storage.googleapis.com/preview-mobile-de/default/0001/14/61b8ec8b30a9ed586f89ef7c1d71e479aadfe46d.json"),
             autoPlay = true,
             fps = 17,
             playBackwards = false,
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        Log.v(MainActivity::class.java.simpleName, "[onActivityResult] requestCode=$requestCode resultCode=$resultCode data=${data?.extras}")
+        Log.v(MainActivity::class.java.simpleName, "[onActivityResult] requestCode=$requestCode resultCode=$resultCode data=${data?.extras} id=${data?.extras?.getString("id")}")
 
         if (requestCode == FREEDOM_PLAYER_ACTIVITY_REQUEST_CODE) {
 
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                 Activity.RESULT_CANCELED -> {
                 }
                 Activity.RESULT_OK -> {
-                    var result = data?.extras
+                    var result = data?.extras?.getString("id")
                     // todo trigger remove event
                 }
             }

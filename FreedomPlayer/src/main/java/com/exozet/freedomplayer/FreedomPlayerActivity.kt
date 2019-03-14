@@ -23,8 +23,6 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
     lateinit var parameter: Parameter
 
-    var requestCode: Int? = null
-
     var height: Int = 2048
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,8 +40,6 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
         parameter = Parcels.unwrap(intent?.extras?.getParcelable(Parameter::class.java.canonicalName))
             ?: return
-
-        requestCode = intent?.extras?.getInt("requestCode")
 
         window.decorView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
@@ -303,14 +299,14 @@ class FreedomPlayerActivity : AppCompatActivity() {
                 FreedomPlayerActivity::class.java
             ).apply { putExtra(Parameter::class.java.canonicalName, Parcels.wrap(parameter)) })
 
-        fun startActivityForResult(context: Context, parameter: Parameter, requestCode: Int) = context.startActivity(
+        fun startActivityForResult(context: Activity, parameter: Parameter, requestCode: Int) = context.startActivityForResult(
             Intent(
                 context,
                 FreedomPlayerActivity::class.java
             ).apply {
                 putExtra(Parameter::class.java.canonicalName, Parcels.wrap(parameter))
-                putExtra("requestCode", requestCode)
-            })
+            }, requestCode
+        )
 
         const val THREE_HUNDRED_SIXTY_PLAYER = "THREE_HUNDRED_SIXTY_PLAYER"
         const val SEQUENTIAL_IMAGE_PLAYER = "SEQUENTIAL_IMAGE_PLAYER"
