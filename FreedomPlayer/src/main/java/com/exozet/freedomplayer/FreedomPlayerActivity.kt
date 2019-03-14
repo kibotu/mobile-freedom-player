@@ -1,5 +1,6 @@
 package com.exozet.freedomplayer
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -22,6 +23,8 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
     lateinit var parameter: Parameter
 
+    var requestCode: Int? = null
+
     var height: Int = 2048
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,11 +33,17 @@ class FreedomPlayerActivity : AppCompatActivity() {
         setContentView(R.layout.freedom_player_main_activity)
 
         exit.setOnClickListener {
-            finish()
+            onBackPressed()
+        }
+
+        removeAction.setOnClickListener {
+            removeAction("my car id")
         }
 
         parameter = Parcels.unwrap(intent?.extras?.getParcelable(Parameter::class.java.canonicalName))
             ?: return
+
+        requestCode = intent?.extras?.getInt("requestCode")
 
         window.decorView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
@@ -62,6 +71,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
         autoPlay.setOnCheckedChangeListener { _, isChecked -> sequentialImagePlayer.autoPlay = isChecked }
     }
+
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
@@ -268,6 +278,23 @@ class FreedomPlayerActivity : AppCompatActivity() {
             exteriorJsonRequest?.dispose()
     }
 
+    override fun onBackPressed() {
+        cancelAction()
+    }
+
+    private fun cancelAction() {
+        val returnIntent = Intent()
+        setResult(Activity.RESULT_CANCELED, returnIntent)
+        finish()
+    }
+
+    fun removeAction(id: String) {
+        val returnIntent = Intent()
+        returnIntent.putExtra("id", id)
+        setResult(Activity.RESULT_OK, returnIntent)
+        finish()
+    }
+
     companion object {
 
         fun startActivity(context: Context, parameter: Parameter) = context.startActivity(
@@ -275,6 +302,15 @@ class FreedomPlayerActivity : AppCompatActivity() {
                 context,
                 FreedomPlayerActivity::class.java
             ).apply { putExtra(Parameter::class.java.canonicalName, Parcels.wrap(parameter)) })
+
+        fun startActivityForResult(context: Context, parameter: Parameter, requestCode: Int) = context.startActivity(
+            Intent(
+                context,
+                FreedomPlayerActivity::class.java
+            ).apply {
+                putExtra(Parameter::class.java.canonicalName, Parcels.wrap(parameter))
+                putExtra("requestCode", requestCode)
+            })
 
         const val THREE_HUNDRED_SIXTY_PLAYER = "THREE_HUNDRED_SIXTY_PLAYER"
         const val SEQUENTIAL_IMAGE_PLAYER = "SEQUENTIAL_IMAGE_PLAYER"
