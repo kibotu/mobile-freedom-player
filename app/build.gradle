@@ -135,6 +135,7 @@ dependencies {
     implementation libs.kotlinJdk8
     implementation libs.supportMultidex
     implementation libs.supportAppCompat
+    implementation libs.appCompatResources
     implementation libs.supportDesign
     implementation libs.constraintLayout
     implementation libs.supportVectorDrawable
