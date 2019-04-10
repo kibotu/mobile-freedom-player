@@ -118,7 +118,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
         }
         projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE
         interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH
-        showControls = true
+        showControls = parameter.showControls
         onCameraRotation = { pitch, yaw, roll ->
             try {
                 degreeIndicator.rotation = -yaw
@@ -138,7 +138,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
         playBackwards = parameter.playBackwards
         zoomable = parameter.zoomable
         translatable = parameter.translatable
-        showControls = false // parameter.showControls
+        showControls = parameter.showControls
         swipeSpeed = parameter.swipeSpeed
         blurLetterbox = parameter.blurLetterbox
         onProgressChanged = { degreeIndicator.rotation = it * 360 }
