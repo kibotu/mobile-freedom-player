@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.exozet.freedomplayer.** { *; }
+-keep class om.exozet.threehundredsixtyplayer.** { *; }
+-keep class com.exozet.sequentialimageplayer.** { *; }
