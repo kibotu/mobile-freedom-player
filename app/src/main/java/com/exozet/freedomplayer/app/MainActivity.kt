@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.exozet.freedomplayer.FreedomPlayerActivity
 import com.exozet.freedomplayer.Parameter
+import com.exozet.freedomplayer.PlayerTypes
 import com.exozet.threehundredsixtyplayer.ThreeHundredSixtyPlayer
 
 class MainActivity : AppCompatActivity() {
@@ -56,8 +57,18 @@ class MainActivity : AppCompatActivity() {
                 Activity.RESULT_CANCELED -> {
                 }
                 Activity.RESULT_OK -> {
-                    var result = data?.extras?.getString("id")
-                    // todo trigger remove event
+
+                    val adsId = data?.extras?.getString("id")
+
+                    when (data?.extras?.getString(PlayerTypes::class.java.simpleName)) {
+                        FreedomPlayerActivity.THREE_HUNDRED_SIXTY_PLAYER -> {
+                        }
+                        FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER -> {
+                        }
+                        else -> {
+
+                        }
+                    }
                 }
             }
         }
