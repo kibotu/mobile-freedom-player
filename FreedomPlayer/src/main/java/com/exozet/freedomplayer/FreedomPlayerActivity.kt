@@ -35,7 +35,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
         }
 
         removeAction.setOnClickListener {
-            removeAction("my car id")
+            removeAction(parameter.adsId ?: "")
         }
 
         parameter = Parcels.unwrap(intent?.extras?.getParcelable(Parameter::class.java.canonicalName))

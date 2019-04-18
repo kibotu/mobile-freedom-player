@@ -23,5 +23,6 @@ data class Parameter(
     var zoomable: Boolean = true,
     var translatable: Boolean = true,
     var swipeSpeed: Float = 0.8f,
-    var blurLetterbox: Boolean = true
+    var blurLetterbox: Boolean = true,
+    var adsId: String? = null
 )
