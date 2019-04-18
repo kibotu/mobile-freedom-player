@@ -286,7 +286,16 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
     fun removeAction(id: String) {
         val returnIntent = Intent()
+
         returnIntent.putExtra("id", id)
+
+        returnIntent.putExtra(
+            PlayerTypes::class.java.name, if (sequentialImagePlayer.visibility == View.VISIBLE)
+                SEQUENTIAL_IMAGE_PLAYER
+            else
+                THREE_HUNDRED_SIXTY_PLAYER
+        )
+
         setResult(Activity.RESULT_OK, returnIntent)
         finish()
     }
