@@ -57,6 +57,14 @@ class FreedomPlayerActivity : AppCompatActivity() {
             }
         })
 
+        val hasSequentialData = parameter.sequentialImageUri != null || parameter.sequentialImageUris != null
+        val hasThreeHundredSixtyData = parameter.threeHundredSixtyUri != null
+        if((hasSequentialData || hasThreeHundredSixtyData)
+            || !(hasSequentialData && hasThreeHundredSixtyData) ) {
+            startExteriorPlayer.visibility = View.GONE
+            startInteriorPlayer.visibility = View.GONE
+        }
+
         startExteriorPlayer.setOnClickListener {
             switchToExterior()
         }
