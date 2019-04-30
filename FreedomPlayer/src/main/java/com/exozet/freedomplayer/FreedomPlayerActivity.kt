@@ -61,8 +61,9 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
         val hasSequentialData = parameter.sequentialImageUri != null || parameter.sequentialImageUris != null
         val hasThreeHundredSixtyData = parameter.threeHundredSixtyUri != null
-        if((hasSequentialData || hasThreeHundredSixtyData)
-            || !(hasSequentialData && hasThreeHundredSixtyData) ) {
+        if ((hasSequentialData || hasThreeHundredSixtyData)
+            || !(hasSequentialData && hasThreeHundredSixtyData)
+        ) {
             startExteriorPlayer.visibility = View.GONE
             startInteriorPlayer.visibility = View.GONE
         }
@@ -126,8 +127,8 @@ class FreedomPlayerActivity : AppCompatActivity() {
             }
             else -> uri = parameter.threeHundredSixtyUri
         }
-        projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE
-        interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH
+        projectionMode = parameter.projectionMode
+        interactionMode = parameter.interactionMode
         showControls = parameter.showControls
         onCameraRotation = { pitch, yaw, roll ->
             try {
@@ -318,14 +319,15 @@ class FreedomPlayerActivity : AppCompatActivity() {
                 FreedomPlayerActivity::class.java
             ).apply { putExtra(Parameter::class.java.canonicalName, Parcels.wrap(parameter)) })
 
-        fun startActivityForResult(context: Activity, parameter: Parameter, requestCode: Int) = context.startActivityForResult(
-            Intent(
-                context,
-                FreedomPlayerActivity::class.java
-            ).apply {
-                putExtra(Parameter::class.java.canonicalName, Parcels.wrap(parameter))
-            }, requestCode
-        )
+        fun startActivityForResult(context: Activity, parameter: Parameter, requestCode: Int) =
+            context.startActivityForResult(
+                Intent(
+                    context,
+                    FreedomPlayerActivity::class.java
+                ).apply {
+                    putExtra(Parameter::class.java.canonicalName, Parcels.wrap(parameter))
+                }, requestCode
+            )
 
         const val THREE_HUNDRED_SIXTY_PLAYER = "THREE_HUNDRED_SIXTY_PLAYER"
         const val SEQUENTIAL_IMAGE_PLAYER = "SEQUENTIAL_IMAGE_PLAYER"
