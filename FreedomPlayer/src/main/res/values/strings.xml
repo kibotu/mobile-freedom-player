@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FreedomPlayer</string>
+    <string name="kDeletionTitle">Aufnahme löschen?</string>
+    <string name="kDeletionText">Gelöschte Aufnahmen können nicht wiederhergestellt werden.</string>
+    <string name="kCancel">Abbrechen</string>
+    <string name="kDelete">Löschen</string>
 </resources>

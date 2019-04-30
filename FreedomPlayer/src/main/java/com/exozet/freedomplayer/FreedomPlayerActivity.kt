@@ -2,6 +2,7 @@ package com.exozet.freedomplayer
 
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
@@ -10,6 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.exozet.threehundredsixtyplayer.ThreeHundredSixtyPlayer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,7 +37,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
         }
 
         removeAction.setOnClickListener {
-            removeAction(parameter.adsId ?: "")
+            showDeletRecordingAlert(DialogInterface.OnClickListener { _, _ -> removeAction(parameter.adsId ?: "") })
         }
 
         parameter = Parcels.unwrap(intent?.extras?.getParcelable(Parameter::class.java.canonicalName))
@@ -356,5 +358,18 @@ class FreedomPlayerActivity : AppCompatActivity() {
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+    }
+
+    fun Context.showDeletRecordingAlert(
+        confirmAction: DialogInterface.OnClickListener = DialogInterface.OnClickListener { dialog, which -> dialog?.dismiss() }
+    ) {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.kDeletionTitle)
+            .setMessage(R.string.kDeletionText)
+            .setNeutralButton(R.string.kDelete, confirmAction)
+            .setPositiveButton(R.string.kCancel, null)
+            .setCancelable(true)
+            .create()
+            .show()
     }
 }
