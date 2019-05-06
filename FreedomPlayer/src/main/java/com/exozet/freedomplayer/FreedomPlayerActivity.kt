@@ -13,7 +13,6 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.exozet.threehundredsixtyplayer.ThreeHundredSixtyPlayer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -61,12 +60,9 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
         val hasSequentialData = parameter.sequentialImageUri != null || parameter.sequentialImageUris != null
         val hasThreeHundredSixtyData = parameter.threeHundredSixtyUri != null
-        if ((hasSequentialData || hasThreeHundredSixtyData)
-            || !(hasSequentialData && hasThreeHundredSixtyData)
-        ) {
-            startExteriorPlayer.visibility = View.GONE
-            startInteriorPlayer.visibility = View.GONE
-        }
+        val showViewWhenDataAvailable = showViewWhenDataAvailable(hasSequentialData, hasThreeHundredSixtyData)
+        startExteriorPlayer.visibility = showViewWhenDataAvailable
+        startInteriorPlayer.visibility = showViewWhenDataAvailable
 
         startExteriorPlayer.setOnClickListener {
             switchToExterior()
@@ -78,6 +74,11 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
         autoPlay.setOnCheckedChangeListener { _, isChecked -> sequentialImagePlayer.autoPlay = isChecked }
     }
+
+    private fun showViewWhenDataAvailable(
+        hasSequentialData: Boolean,
+        hasThreeHundredSixtyData: Boolean
+    ) = if (hasSequentialData && hasThreeHundredSixtyData) View.VISIBLE else View.GONE
 
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
