@@ -88,6 +88,12 @@ dependencies {
 
     implementation libs.parceler
     kapt libs.parcelerProcessor
+
+    implementation libs.glide
+    kapt libs.glideAnnotationsProcessor
+
+    implementation libs.numberprogressbar
+
 }
 
 configurations.all {

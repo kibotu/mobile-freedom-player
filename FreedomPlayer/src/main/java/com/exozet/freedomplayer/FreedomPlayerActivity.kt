@@ -4,16 +4,26 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.KITKAT
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewTreeObserver
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.exozet.threehundredsixtyplayer.ThreeHundredSixtyPlayer
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -37,7 +47,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
         }
 
         removeAction.setOnClickListener {
-            showDeletRecordingAlert(DialogInterface.OnClickListener { _, _ -> removeAction(parameter.adsId ?: "") })
+            showDeleteRecordingAlert(DialogInterface.OnClickListener { _, _ -> removeAction(parameter.adsId ?: "") })
         }
 
         parameter = Parcels.unwrap(intent?.extras?.getParcelable(Parameter::class.java.canonicalName))
@@ -183,6 +193,12 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
     var exteriorJsonRequest: Disposable? = null
 
+    val requestOptions by lazy {
+        RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL)
+            .dontAnimate()
+            .priority(Priority.IMMEDIATE)
+    }
+
     private fun loadExteriorJson(jsonUri: Uri, block: (Array<Uri>) -> Unit) {
 
         exteriorJsonRequest = RequestProvider.exteriorJson(jsonUri).subscribeOn(Schedulers.io())
@@ -201,12 +217,45 @@ class FreedomPlayerActivity : AppCompatActivity() {
                 if (uris.isEmpty())
                     Log.e(TAG, "error loading exteriorJson public urls")
 
+                count = 0
+                numberProgressBar.max = uris.size
+                numberProgressBar.visibility = VISIBLE
+
+                uris.forEach {
+                    log("preload $it")
+                    Glide.with(applicationContext)
+                        .applyDefaultRequestOptions(requestOptions)
+                        .load(it)
+                        .addListener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                                Log.e(TAG, "preload onLoadFailed count=$count size=${uris.size} $model $it")
+                                onProgressDownload(uris)
+                                return false
+                            }
+
+                            override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                                onProgressDownload(uris)
+                                return false
+                            }
+                        })
+                        .preload()
+                }
+
                 block(uris)
 
             }, { t ->
                 Log.e(TAG, t.message)
                 t.printStackTrace()
             })
+    }
+
+    var count = 0
+
+    private fun onProgressDownload(uris: Array<Uri>) {
+        ++count
+        numberProgressBar.progress = count
+        if (count == uris.size - 1)
+            numberProgressBar.visibility = GONE
     }
 
     /**
@@ -362,7 +411,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     }
 
-    fun Context.showDeletRecordingAlert(
+    fun Context.showDeleteRecordingAlert(
         confirmAction: DialogInterface.OnClickListener = DialogInterface.OnClickListener { dialog, which -> dialog?.dismiss() }
     ) {
         AlertDialog.Builder(this)
