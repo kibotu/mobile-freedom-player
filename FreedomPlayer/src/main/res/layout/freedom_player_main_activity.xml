@@ -128,15 +128,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.daimajia.numberprogressbar.NumberProgressBar
-        android:layout_width="0dp"
-        app:layout_constraintStart_toEndOf="@id/degreeIndicator"
-        app:layout_constraintEnd_toStartOf="@id/removeAction"
-        android:visibility="gone"
-        android:id="@+id/numberProgressBar"
-        style="@style/NumberProgressBar_Funny_Orange"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_height="wrap_content" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

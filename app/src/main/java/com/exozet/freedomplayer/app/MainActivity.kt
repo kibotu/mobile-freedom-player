@@ -33,11 +33,11 @@ class MainActivity : AppCompatActivity() {
 //            sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(),
             sequentialImageUri = Uri.parse("https://storage.googleapis.com/preview-mobile-de/default/0001/57/a690994bb9c108725bbdb295f17e2b82d798a1be.json"),
             autoPlay = false,
-            fps = 9,
+            fps = 30,
             playBackwards = false,
             zoomable = true,
             translatable = true,
-            swipeSpeed = 0.85f,
+            swipeSpeed = 0.75f,
             blurLetterbox = true
         )
 

@@ -4,26 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.KITKAT
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewTreeObserver
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.Priority
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -35,7 +24,16 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
     lateinit var parameter: Parameter
 
-    var height: Int = 2048
+    var height: Int = 1024
+
+    var debug = false
+
+    private val TAG = this::class.java.simpleName
+
+    private fun log(message: String?) {
+        if (debug)
+            Log.d(TAG, message ?: "")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -173,17 +171,14 @@ class FreedomPlayerActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
 
-                log("interior=$it")
+                log("interior=$it height=$height")
 
-                val uri: Uri? = Uri.parse(
-                    interiorPublicUrlByScreenHeight(height, it?.imageMedia?.publicUrls)
-                        ?: ""
-                )
+                val uri: Uri = Uri.parse(interiorPublicUrlByScreenHeight(height, it?.imageMedia?.publicUrls) ?: "")
 
                 if (uri.toString().isEmpty())
                     Log.e(TAG, "error loading interiorJson public urls")
 
-                block(uri!!)
+                block(uri)
 
             }, { t ->
                 Log.e(TAG, t.message)
@@ -192,12 +187,6 @@ class FreedomPlayerActivity : AppCompatActivity() {
     }
 
     var exteriorJsonRequest: Disposable? = null
-
-    val requestOptions by lazy {
-        RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL)
-            .dontAnimate()
-            .priority(Priority.IMMEDIATE)
-    }
 
     private fun loadExteriorJson(jsonUri: Uri, block: (Array<Uri>) -> Unit) {
 
@@ -217,45 +206,12 @@ class FreedomPlayerActivity : AppCompatActivity() {
                 if (uris.isEmpty())
                     Log.e(TAG, "error loading exteriorJson public urls")
 
-                count = 0
-                numberProgressBar.max = uris.size
-                numberProgressBar.visibility = VISIBLE
-
-                uris.forEach {
-                    log("preload $it")
-                    Glide.with(applicationContext)
-                        .applyDefaultRequestOptions(requestOptions)
-                        .load(it)
-                        .addListener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                                Log.e(TAG, "preload onLoadFailed count=$count size=${uris.size} $model $it")
-                                onProgressDownload(uris)
-                                return false
-                            }
-
-                            override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                                onProgressDownload(uris)
-                                return false
-                            }
-                        })
-                        .preload()
-                }
-
                 block(uris)
 
             }, { t ->
                 Log.e(TAG, t.message)
                 t.printStackTrace()
             })
-    }
-
-    var count = 0
-
-    private fun onProgressDownload(uris: Array<Uri>) {
-        ++count
-        numberProgressBar.progress = count
-        if (count == uris.size - 1)
-            numberProgressBar.visibility = GONE
     }
 
     /**
@@ -380,15 +336,6 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
         const val THREE_HUNDRED_SIXTY_PLAYER = "THREE_HUNDRED_SIXTY_PLAYER"
         const val SEQUENTIAL_IMAGE_PLAYER = "SEQUENTIAL_IMAGE_PLAYER"
-    }
-
-    var debug = false
-
-    private val TAG = this::class.java.simpleName
-
-    private fun log(message: String?) {
-        if (debug)
-            Log.d(TAG, message ?: "")
     }
 
     /**
