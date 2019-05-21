@@ -15,6 +15,7 @@ data class Parameter(
     @ProjectionMode var projectionMode: Int = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE,
     @InteractionMode var interactionMode: Int = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH,
     var showControls: Boolean = false,
+    var showSwipeIcon: Boolean = true,
     var sequentialImageUris: Array<Uri>? = null,
     var sequentialImageUri: Uri? = null,
     var autoPlay: Boolean = true,
