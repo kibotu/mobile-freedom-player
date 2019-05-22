@@ -85,8 +85,6 @@ class FreedomPlayerActivity : AppCompatActivity() {
         }
 
         autoPlay.setOnCheckedChangeListener { _, isChecked -> sequentialImagePlayer.autoPlay = isChecked }
-
-        swipe_icon.visibility = if (parameter.showSwipeIcon) View.VISIBLE else View.GONE
     }
 
 
