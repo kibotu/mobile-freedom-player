@@ -24,16 +24,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
     lateinit var parameter: Parameter
 
-    var height: Int = 1024
-
-    var debug = false
-
-    private val TAG = this::class.java.simpleName
-
-    private fun log(message: String?) {
-        if (debug)
-            Log.d(TAG, message ?: "")
-    }
+    var height: Int = 2048
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,13 +36,11 @@ class FreedomPlayerActivity : AppCompatActivity() {
         }
 
         removeAction.setOnClickListener {
-            showDeleteRecordingAlert(DialogInterface.OnClickListener { _, _ ->
-                removeAction(parameter.adsId ?: "")
-            })
+            showDeletRecordingAlert(DialogInterface.OnClickListener { _, _ -> removeAction(parameter.adsId ?: "") })
         }
 
         parameter = Parcels.unwrap(intent?.extras?.getParcelable(Parameter::class.java.canonicalName))
-                ?: return
+            ?: return
 
         window.decorView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
@@ -71,10 +60,9 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
         val hasSequentialData = parameter.sequentialImageUri != null || parameter.sequentialImageUris != null
         val hasThreeHundredSixtyData = parameter.threeHundredSixtyUri != null
-        if (!hasSequentialData || !hasThreeHundredSixtyData) {
-            startExteriorPlayer.visibility = View.GONE
-            startInteriorPlayer.visibility = View.GONE
-        }
+        val showViewWhenDataAvailable = showViewWhenDataAvailable(hasSequentialData, hasThreeHundredSixtyData)
+        startExteriorPlayer.visibility = showViewWhenDataAvailable
+        startInteriorPlayer.visibility = showViewWhenDataAvailable
 
         startExteriorPlayer.setOnClickListener {
             switchToExterior()
@@ -86,6 +74,11 @@ class FreedomPlayerActivity : AppCompatActivity() {
 
         autoPlay.setOnCheckedChangeListener { _, isChecked -> sequentialImagePlayer.autoPlay = isChecked }
     }
+
+    private fun showViewWhenDataAvailable(
+        hasSequentialData: Boolean,
+        hasThreeHundredSixtyData: Boolean
+    ) = if (hasSequentialData && hasThreeHundredSixtyData) View.VISIBLE else View.GONE
 
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -124,12 +117,12 @@ class FreedomPlayerActivity : AppCompatActivity() {
     private fun startThreeHundredSixtyPlayer() = with(threeHundredSixtyView) {
         when {
             parameter.threeHundredSixtyUri.toString().startsWith("http://") -> loadInteriorJson(
-                    parameter.threeHundredSixtyUri ?: Uri.EMPTY
+                parameter.threeHundredSixtyUri ?: Uri.EMPTY
             ) {
                 uri = it
             }
             parameter.threeHundredSixtyUri.toString().startsWith("https://") -> loadInteriorJson(
-                    parameter.threeHundredSixtyUri ?: Uri.EMPTY
+                parameter.threeHundredSixtyUri ?: Uri.EMPTY
             ) {
                 uri = it
             }
@@ -168,23 +161,25 @@ class FreedomPlayerActivity : AppCompatActivity() {
     private fun loadInteriorJson(jsonUri: Uri, block: (Uri) -> Unit) {
 
         interiorJsonRequest = RequestProvider.interiorJson(jsonUri).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
 
-                    log("interior=$it height=$height")
+                log("interior=$it")
 
-                    val uri: Uri = Uri.parse(interiorPublicUrlByScreenHeight(height, it?.imageMedia?.publicUrls)
-                            ?: "")
+                val uri: Uri? = Uri.parse(
+                    interiorPublicUrlByScreenHeight(height, it?.imageMedia?.publicUrls)
+                        ?: ""
+                )
 
-                    if (uri.toString().isEmpty())
-                        Log.e(TAG, "error loading interiorJson public urls")
+                if (uri.toString().isEmpty())
+                    Log.e(TAG, "error loading interiorJson public urls")
 
-                    block(uri)
+                block(uri!!)
 
-                }, { t ->
-                    Log.e(TAG, t.message)
-                    t.printStackTrace()
-                })
+            }, { t ->
+                Log.e(TAG, t.message)
+                t.printStackTrace()
+            })
     }
 
     var exteriorJsonRequest: Disposable? = null
@@ -192,27 +187,27 @@ class FreedomPlayerActivity : AppCompatActivity() {
     private fun loadExteriorJson(jsonUri: Uri, block: (Array<Uri>) -> Unit) {
 
         exteriorJsonRequest = RequestProvider.exteriorJson(jsonUri).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
 
-                    log("exterior=$it")
+                log("exterior=$it")
 
-                    val uris: Array<Uri> = it?.imageCollection?.galleryHasMedias?.map {
-                        Uri.parse(
-                                exteriorPublicUrlByScreenHeight(height, it?.media?.publicUrls)
-                                        ?: ""
-                        )
-                    }?.toTypedArray() ?: arrayOf()
+                val uris: Array<Uri> = it?.imageCollection?.galleryHasMedias?.map {
+                    Uri.parse(
+                        exteriorPublicUrlByScreenHeight(height, it?.media?.publicUrls)
+                            ?: ""
+                    )
+                }?.toTypedArray() ?: arrayOf()
 
-                    if (uris.isEmpty())
-                        Log.e(TAG, "error loading exteriorJson public urls")
+                if (uris.isEmpty())
+                    Log.e(TAG, "error loading exteriorJson public urls")
 
-                    block(uris)
+                block(uris)
 
-                }, { t ->
-                    Log.e(TAG, t.message)
-                    t.printStackTrace()
-                })
+            }, { t ->
+                Log.e(TAG, t.message)
+                t.printStackTrace()
+            })
     }
 
     /**
@@ -307,10 +302,10 @@ class FreedomPlayerActivity : AppCompatActivity() {
         returnIntent.putExtra("id", id)
 
         returnIntent.putExtra(
-                PlayerTypes::class.java.name, if (sequentialImagePlayer.visibility == View.VISIBLE)
-            SEQUENTIAL_IMAGE_PLAYER
-        else
-            THREE_HUNDRED_SIXTY_PLAYER
+            PlayerTypes::class.java.name, if (sequentialImagePlayer.visibility == View.VISIBLE)
+                SEQUENTIAL_IMAGE_PLAYER
+            else
+                THREE_HUNDRED_SIXTY_PLAYER
         )
 
         setResult(Activity.RESULT_OK, returnIntent)
@@ -320,23 +315,32 @@ class FreedomPlayerActivity : AppCompatActivity() {
     companion object {
 
         fun startActivity(context: Context, parameter: Parameter) = context.startActivity(
-                Intent(
-                        context,
-                        FreedomPlayerActivity::class.java
-                ).apply { putExtra(Parameter::class.java.canonicalName, Parcels.wrap(parameter)) })
+            Intent(
+                context,
+                FreedomPlayerActivity::class.java
+            ).apply { putExtra(Parameter::class.java.canonicalName, Parcels.wrap(parameter)) })
 
         fun startActivityForResult(context: Activity, parameter: Parameter, requestCode: Int) =
-                context.startActivityForResult(
-                        Intent(
-                                context,
-                                FreedomPlayerActivity::class.java
-                        ).apply {
-                            putExtra(Parameter::class.java.canonicalName, Parcels.wrap(parameter))
-                        }, requestCode
-                )
+            context.startActivityForResult(
+                Intent(
+                    context,
+                    FreedomPlayerActivity::class.java
+                ).apply {
+                    putExtra(Parameter::class.java.canonicalName, Parcels.wrap(parameter))
+                }, requestCode
+            )
 
         const val THREE_HUNDRED_SIXTY_PLAYER = "THREE_HUNDRED_SIXTY_PLAYER"
         const val SEQUENTIAL_IMAGE_PLAYER = "SEQUENTIAL_IMAGE_PLAYER"
+    }
+
+    var debug = false
+
+    private val TAG = this::class.java.simpleName
+
+    private fun log(message: String?) {
+        if (debug)
+            Log.d(TAG, message ?: "")
     }
 
     /**
@@ -359,16 +363,16 @@ class FreedomPlayerActivity : AppCompatActivity() {
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     }
 
-    fun Context.showDeleteRecordingAlert(
-            confirmAction: DialogInterface.OnClickListener = DialogInterface.OnClickListener { dialog, which -> dialog?.dismiss() }
+    fun Context.showDeletRecordingAlert(
+        confirmAction: DialogInterface.OnClickListener = DialogInterface.OnClickListener { dialog, which -> dialog?.dismiss() }
     ) {
         AlertDialog.Builder(this)
-                .setTitle(R.string.kDeletionTitle)
-                .setMessage(R.string.kDeletionText)
-                .setNeutralButton(R.string.kDelete, confirmAction)
-                .setPositiveButton(R.string.kCancel, null)
-                .setCancelable(true)
-                .create()
-                .show()
+            .setTitle(R.string.kDeletionTitle)
+            .setMessage(R.string.kDeletionText)
+            .setNeutralButton(R.string.kDelete, confirmAction)
+            .setPositiveButton(R.string.kCancel, null)
+            .setCancelable(true)
+            .create()
+            .show()
     }
 }
