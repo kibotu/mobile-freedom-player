@@ -21,5 +21,5 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.exozet.freedomplayer.** { *; }
--keep class om.exozet.threehundredsixtyplayer.** { *; }
+-keep class com.exozet.threehundredsixtyplayer.** { *; }
 -keep class com.exozet.sequentialimageplayer.** { *; }
