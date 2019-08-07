@@ -71,7 +71,7 @@ android {
 dependencies {
     implementation libs.kotlinJdk8
     implementation libs.supportAppCompat
-    implementation libs.constraintLayout
+    implementation libs.constraintLayout2
 
     implementation libs.rx2java
     implementation libs.rx2Android
@@ -83,15 +83,14 @@ dependencies {
     implementation libs.retrofit
     implementation libs.retrofitAdapterRxJava2
     implementation libs.retrofitConverterGson
-    implementation libs.okhttp3
     implementation libs.okhttp3LoggingInterceptor
+    implementation libs.okhttp4
 
     implementation libs.parceler
     kapt libs.parcelerProcessor
 
     implementation libs.glide
     kapt libs.glideAnnotationsProcessor
-
 }
 
 configurations.all {
@@ -99,7 +98,8 @@ configurations.all {
 
     resolutionStrategy.force libs.kotlinJdk8
     resolutionStrategy.force libs.supportAppCompat
-    resolutionStrategy.force libs.constraintLayout
+    resolutionStrategy.force libs.constraintLayout2
+    resolutionStrategy.force libs.okhttp4
 }
 
 apply from: "${project.rootDir}/Android-Dependencies/javadoc.gradle"

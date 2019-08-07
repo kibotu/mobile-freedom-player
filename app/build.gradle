@@ -138,7 +138,7 @@ dependencies {
     implementation libs.supportAppCompat
     implementation libs.appCompatResources
     implementation libs.supportDesign
-    implementation libs.constraintLayout
+    implementation libs.constraintLayout2
     implementation libs.supportVectorDrawable
 
     debugImplementation libs.leakcanaryDebug

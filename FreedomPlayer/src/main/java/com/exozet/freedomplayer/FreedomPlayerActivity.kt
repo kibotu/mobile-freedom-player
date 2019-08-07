@@ -18,6 +18,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.freedom_player_main_activity.*
 import org.parceler.Parcels
+import kotlin.math.min
 
 
 class FreedomPlayerActivity : AppCompatActivity() {
@@ -47,7 +48,7 @@ class FreedomPlayerActivity : AppCompatActivity() {
                 if (window.decorView.viewTreeObserver.isAlive)
                     window.decorView.viewTreeObserver.removeOnPreDrawListener(this)
 
-                height = Math.min(window.decorView.width, window.decorView.height)
+                height = min(window.decorView.width, window.decorView.height)
 
                 when (parameter.startPlayer) {
                     SEQUENTIAL_IMAGE_PLAYER -> switchToExterior()
