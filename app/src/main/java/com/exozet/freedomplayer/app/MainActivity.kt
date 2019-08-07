@@ -23,9 +23,10 @@ class MainActivity : AppCompatActivity() {
 
         val parameter = Parameter(
             startPlayer = FreedomPlayerActivity.THREE_HUNDRED_SIXTY_PLAYER,
+//            startPlayer = FreedomPlayerActivity.SEQUENTIAL_IMAGE_PLAYER,
 //                 threeHundredSixtyUri = parseAssetFile("equirectangular.jpg"),
-//            threeHundredSixtyUri = parseAssetFile("interior_example.jpg"),
-            threeHundredSixtyUri = Uri.parse("https://storage.googleapis.com/mobile-de-live/default/0020/57/30681a8ec64824d1767638cb5a36b0724501c4f8.json"),
+            threeHundredSixtyUri = parseAssetFile("interior_example.jpg"),
+//            threeHundredSixtyUri = Uri.parse("https://storage.googleapis.com/mobile-de-live/default/0020/57/30681a8ec64824d1767638cb5a36b0724501c4f8.json"),
             projectionMode = ThreeHundredSixtyPlayer.PROJECTION_MODE_SPHERE,
             interactionMode = ThreeHundredSixtyPlayer.INTERACTIVE_MODE_MOTION_WITH_TOUCH,
             showControls = false,
