@@ -65,6 +65,12 @@ class FreedomPlayerActivity : AppCompatActivity() {
         startExteriorPlayer.visibility = showViewWhenDataAvailable
         startInteriorPlayer.visibility = showViewWhenDataAvailable
 
+        if(hasSequentialData)
+            startSequentialPlayer()
+
+        if(hasThreeHundredSixtyData)
+            startThreeHundredSixtyPlayer()
+
         startExteriorPlayer.setOnClickListener {
             switchToExterior()
         }
