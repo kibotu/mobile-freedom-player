@@ -19,6 +19,7 @@ android {
     defaultConfig {
         applicationId "com.exozet.freedomplayer.app"
         minSdkVersion minSdkVer
+        multiDexEnabled true
         targetSdkVersion targetSdkVer
         versionCode isCi ? commitCount() : VERSION_CODE
         versionName isCi ? simpleReleaseVersionName() : VERSION_NAME
@@ -140,6 +141,13 @@ dependencies {
     implementation libs.supportDesign
     implementation libs.constraintLayout2
     implementation libs.supportVectorDrawable
+
+    implementation libs.rxpermissions
+    implementation libs.logger
+
+    implementation libs.rx2java
+    implementation libs.rx2Android
+    implementation libs.rx2Kotlin
 
     debugImplementation libs.leakcanaryDebug
     debugImplementation libs.leakcanaryDebugSupportFragments
