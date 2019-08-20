@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onWritePermissionGranted() {
 
-        val sequentialImages = (1 until 360).map {
+        val localStorageTest = (1 until 360).map {
             val uri = Uri.fromFile(File("${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)}/postProcess/11113/1565785803706/image_%03d.jpg".format(it)))
 
             logv { "uri.path=${uri.path} exists=${File(uri.path).exists()}" }
@@ -77,8 +77,8 @@ class MainActivity : AppCompatActivity() {
 //            sequentialImageUris = (1 until 192).map {
 //                parseAssetFile(String.format("default/out%d.png", it))
 //            }.toTypedArray(),
-            sequentialImageUris = sequentialImages,
-//            sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(),
+//            sequentialImageUris = sequentialImages,
+            sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(),
             // sequentialImageUri = Uri.parse("https://storage.googleapis.com/mobile-de-live/default/0024/99/ffb2c28b0cd4d2f1a1480e57591a79ead05b9903.json"), //todo: broken link
             autoPlay = false,
             fps = 17,

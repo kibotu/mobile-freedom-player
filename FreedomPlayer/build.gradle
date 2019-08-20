@@ -103,6 +103,10 @@ dependencies {
 
     implementation libs.parceler
     kapt libs.parcelerProcessor
+
+    implementation libs.glide
+    implementation libs.glideOkHttp3
+    kapt libs.glideAnnotationsProcessor
 }
 
 configurations.all {
