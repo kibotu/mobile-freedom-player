@@ -78,8 +78,8 @@ class MainActivity : AppCompatActivity() {
 //                parseAssetFile(String.format("default/out%d.png", it))
 //            }.toTypedArray(),
 //            sequentialImageUris = sequentialImages,
-            sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(),
-            // sequentialImageUri = Uri.parse("https://storage.googleapis.com/mobile-de-live/default/0024/99/ffb2c28b0cd4d2f1a1480e57591a79ead05b9903.json"), //todo: broken link
+//            sequentialImageUris = (1 until 192).map { parseAssetFile(String.format("stabilized/out%03d.png", it)) }.toTypedArray(),
+             sequentialImageUri = Uri.parse("https://storage.googleapis.com/preview-mobile-de/default/0001/96/807d289c466dea08b5c59c501114def3e2b1357d.json"),
             autoPlay = false,
             fps = 17,
             playBackwards = false,

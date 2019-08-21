@@ -33,7 +33,7 @@ internal object RequestProvider {
         .writeTimeout(15, TimeUnit.SECONDS)
         .connectTimeout(15, TimeUnit.SECONDS)
         .addInterceptor(ContentTypeInterceptor())
-        .addInterceptor(authorizationInterceptor)
+//        .addInterceptor(authorizationInterceptor)
         .addInterceptor(createHttpLoggingInterceptor { enableLogging })
         .build()
 
